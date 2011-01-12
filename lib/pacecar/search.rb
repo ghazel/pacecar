@@ -15,7 +15,8 @@ module Pacecar
       def define_search_scopes
         safe_column_names.each do |name|
           named_scope "#{name}_equals".to_sym, lambda { |query|
-            { :conditions => ["#{quoted_table_name}.#{name} = :query", { :query => query }] }
+            condition = attribute_condition("#{quoted_table_name}.#{connection.quote_column_name(name)}", query)
+            { :conditions => [condition, query] }
           }
         end
         text_and_string_column_names.each do |name|
