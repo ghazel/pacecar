@@ -18,6 +18,11 @@ module Pacecar
             condition = attribute_condition("#{quoted_table_name}.#{connection.quote_column_name(name)}", query)
             { :conditions => [condition, query] }
           }
+          named_scope "#{name}_not_equals".to_sym, lambda { |query|
+            condition = attribute_condition("#{quoted_table_name}.#{connection.quote_column_name(name)}", query)
+            condition = "NOT (#{condition})"
+            { :conditions => [condition, query] }
+          }
         end
         text_and_string_column_names.each do |name|
           named_scope "#{name}_matches".to_sym, lambda { |query|
