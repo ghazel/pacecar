@@ -8,7 +8,7 @@ class SearchTest < Test::Unit::TestCase
     end
     should "set the correct proxy options for a _equals column method" do
       assert @class.respond_to?(:first_name_equals)
-      proxy_options = { :conditions => ['"users".first_name = :query', { :query => "test" }] }
+      proxy_options = { :conditions => ['"users"."first_name" = ?', "test"] }
       assert_equal proxy_options, @class.first_name_equals('test').proxy_options
     end
     should "set the correct proxy options for a _matches column method" do
