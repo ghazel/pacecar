@@ -11,6 +11,11 @@ class SearchTest < Test::Unit::TestCase
       proxy_options = { :conditions => ['"users"."first_name" = ?', "test"] }
       assert_equal proxy_options, @class.first_name_equals('test').proxy_options
     end
+    should "set the correct proxy options for a _not_equals column method" do
+      assert @class.respond_to?(:first_name_equals)
+      proxy_options = { :conditions => ['NOT ("users"."first_name" = ?)', "test"] }
+      assert_equal proxy_options, @class.first_name_not_equals('test').proxy_options
+    end
     should "set the correct proxy options for a _matches column method" do
       assert @class.respond_to?(:first_name_matches)
       proxy_options = { :conditions => ['"users".first_name like :query', { :query => "%test%" }] }
